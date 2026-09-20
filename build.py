@@ -309,7 +309,7 @@ def head(titulo, desc, prof, extra=""):
 <meta name="theme-color" content="#0B0B0D">
 <link rel="icon" href="{p}img/logo-garage-music.png">
 <link rel="stylesheet" href="{p}assets/fonts.css">
-<link rel="stylesheet" href="{p}assets/base.css?v=1">
+<link rel="stylesheet" href="{p}assets/base.css?v=2">
 {extra}</head>
 <body>
 '''
@@ -487,8 +487,9 @@ def pagina_home():
     <div class="captura">
       <h3>Um aviso, sem enrolação</h3>
       <p>Artigo novo, ebook novo, e nada além disso.</p>
-      <form id="captura">
-        <input type="email" placeholder="seu@email.com" aria-label="Seu e-mail" required>
+      <form id="captura" novalidate>
+        <input type="email" name="email" placeholder="seu@email.com" aria-label="Seu e-mail" required>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
         <button class="btn btn-s" type="submit">Avise-me</button>
       </form>
       <p class="micro">Sem spam. Dá para sair em um clique.</p>

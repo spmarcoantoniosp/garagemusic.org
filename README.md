@@ -41,6 +41,24 @@ como pauta declarada, marcado "em produção". O `corpo` é HTML: `<h2>`, `<p>`,
 `estudo` e `tecnica` saem em aço; `equipamento`, `historia`, `oficina` e
 `usado` saem em âmbar; `ficha` sai em branco.
 
+## Captura de e-mail
+
+O formulário da home envia por [FormSubmit](https://formsubmit.co) — sem backend
+próprio. `assets/site.js` faz `POST` em JSON para o endpoint AJAX e trata os três
+caminhos: e-mail inválido (borda âmbar, sem envio), sucesso (troca o formulário
+pela confirmação) e falha de rede (mensagem de erro e botão reabilitado).
+
+| O que | Onde |
+|---|---|
+| Destino | `DESTINO`, no topo do bloco em `assets/site.js` |
+| Assunto | `ASSUNTO` — leva `#garagemusic` para filtrar na caixa |
+| Isca anti-robô | campo `_honey`, oculto, no markup dentro de `build.py` |
+
+Para trocar o destino, edite `DESTINO` — e lembre que o novo endereço volta a
+exigir a confirmação única. O endereço fica visível no HTML público; o FormSubmit
+oferece um token hasheado depois da primeira confirmação, que substitui o
+endereço no endpoint e tira o e-mail do alcance dos scrapers.
+
 ## Checkouts
 
 `assets/checkouts.js` é o único lugar com URL de Hotmart. O botão lê o código
@@ -62,8 +80,10 @@ Levantamento de 20/09/2026, conferido um a um contra a página de checkout
 
 ## Pendências conhecidas
 
-- O formulário de captura de e-mail **não envia para lugar nenhum**: o script
-  só exibe a mensagem de sucesso. Precisa de um endpoint antes de divulgar.
+- O formulário de captura **precisa de uma ativação única**: o primeiro envio
+  real dispara um e-mail do FormSubmit para `facilitadores@garagecriativa.com.br`
+  com um link de confirmação. Enquanto ninguém clicar nesse link, os cadastros
+  seguintes não são entregues.
 - Sem `og:image`. Falta uma imagem social 1200×630.
 - As capas dos ebooks trazem a etiqueta "GUIA", vocabulário da Garage Labs.
   Na torre Garage Music o termo é "ebook" — as capas precisam ser refeitas
