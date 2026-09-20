@@ -278,6 +278,7 @@ h3{font-size:24px;font-weight:700;line-height:1.16;color:var(--branco)}
 .captura input::placeholder{color:var(--aco)}
 .captura .micro{font-family:"Space Grotesk",sans-serif;font-size:13px;color:var(--aco);margin:14px 0 0}
 .captura .ok{font-family:"Space Grotesk",sans-serif;font-weight:600;color:var(--ambar2);font-size:17px;padding:14px 0}
+.captura .erro{color:var(--ambar2)}
 
 /* ---------- rodape ---------- */
 footer{background:var(--preto);padding:48px 0 56px;border-top:1px solid #17161A}
