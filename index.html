@@ -96,10 +96,13 @@
     <div class="captura">
       <h3>Um aviso, sem enrolação</h3>
       <p>Artigo novo, ebook novo, e nada além disso.</p>
-      <form id="captura">
-        <input type="email" placeholder="seu@email.com" aria-label="Seu e-mail" required>
+      <form id="captura" novalidate data-para="music@garagecriativa.com.br" data-assunto="Quero receber os avisos da Garage Music" data-endpoint="" data-extra="{}" data-ok="Feito. Você vai ser o primeiro a saber quando sair material novo." data-carta="Abri seu programa de e-mail com a mensagem pronta — é só apertar enviar. Se não abriu, escreva para music@garagecriativa.com.br." data-enviando="Enviando…" data-invalido="Confira o endereço: falta o @ ou o domínio." data-falhou="Não consegui enviar agora. Escreva para music@garagecriativa.com.br que eu coloco você na lista.">
+        <input type="email" name="email" placeholder="seu@email.com" aria-label="Seu e-mail"
+               autocomplete="email" required>
+        <label class="isca" aria-hidden="true">Não preencha<input type="text" name="site" tabindex="-1" autocomplete="off"></label>
         <button class="btn btn-s" type="submit">Avise-me</button>
       </form>
+      <p class="aviso" id="capturaAviso" role="status" aria-live="polite"></p>
       <p class="micro">Sem spam. Dá para sair em um clique.</p>
     </div>
   </div>

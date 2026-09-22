@@ -13,11 +13,34 @@ Saida: index.html, store/index.html, artigos/index.html, dicas/index.html,
        404.html, sitemap.xml
 """
 
-import os, datetime
+import os, json, html, datetime
 
 RAIZ = os.path.dirname(os.path.abspath(__file__))
 DOMINIO = "https://garagemusic.org"
 HOJE = "2026-09-20"
+
+# =====================================================================
+# 0. CAPTURA — para onde vai o formulario de aviso da home
+# =====================================================================
+#
+# "endpoint" VAZIO = modo carta: o botao abre o cliente de e-mail do visitante
+# com a mensagem pronta para "para". Funciona sem servidor nenhum, mas depende
+# de o visitante apertar enviar no proprio programa de e-mail.
+#
+# Para ligar o envio automatico, cole em "endpoint" a URL do formulario
+# hospedado (Brevo sibforms, Web3Forms, Formspree). O site faz POST com o campo
+# "email"; o que o servico exigir alem disso entra em "extra"
+# (ex.: {"access_key": "..."} no Web3Forms). O modo carta continua sendo o
+# plano B automatico se o POST falhar.
+#
+# Em nenhuma das duas rotas o formulario finge que enviou.
+
+CAPTURA = dict(
+    para="music@garagecriativa.com.br",
+    endpoint="",
+    extra={},
+    assunto="Quero receber os avisos da Garage Music",
+)
 
 # =====================================================================
 # 1. LOJA — um item por ebook. O codigo (cod) casa com assets/checkouts.js
@@ -408,6 +431,27 @@ def linha_texto(it, tipo="artigo"):
 # Paginas
 # =====================================================================
 
+def atributos_captura():
+    """Atributos do formulario de aviso da home. O destino vem do dict CAPTURA;
+    as mensagens ficam aqui, no arquivo de conteudo — o site.js apenas as le."""
+    c = CAPTURA
+    para = c["para"]
+    campos = [
+        ("data-para", para),
+        ("data-assunto", c["assunto"]),
+        ("data-endpoint", c["endpoint"]),
+        ("data-extra", json.dumps(c["extra"], ensure_ascii=False)),
+        ("data-ok", "Feito. Você vai ser o primeiro a saber quando sair material novo."),
+        ("data-carta", "Abri seu programa de e-mail com a mensagem pronta — é só apertar "
+                       f"enviar. Se não abriu, escreva para {para}."),
+        ("data-enviando", "Enviando…"),
+        ("data-invalido", "Confira o endereço: falta o @ ou o domínio."),
+        ("data-falhou", f"Não consegui enviar agora. Escreva para {para} que eu coloco "
+                        "você na lista."),
+    ]
+    return " ".join(f'{k}="{html.escape(v, quote=True)}"' for k, v in campos)
+
+
 def pagina_home():
     h = head("Garage Music — contrabaixo, equipamento e estudo",
              "Toque com base. Estudo, equipamento e ebooks de contrabaixo, feitos a partir de execução própria.",
@@ -487,15 +531,19 @@ def pagina_home():
     <div class="captura">
       <h3>Um aviso, sem enrolação</h3>
       <p>Artigo novo, ebook novo, e nada além disso.</p>
-      <form id="captura">
-        <input type="email" placeholder="seu@email.com" aria-label="Seu e-mail" required>
+      <form id="captura" novalidate @@CAPTURA@@>
+        <input type="email" name="email" placeholder="seu@email.com" aria-label="Seu e-mail"
+               autocomplete="email" required>
+        <label class="isca" aria-hidden="true">Não preencha<input type="text" name="site" tabindex="-1" autocomplete="off"></label>
         <button class="btn btn-s" type="submit">Avise-me</button>
       </form>
+      <p class="aviso" id="capturaAviso" role="status" aria-live="polite"></p>
       <p class="micro">Sem spam. Dá para sair em um clique.</p>
     </div>
   </div>
 </section>
 '''
+    h = h.replace("@@CAPTURA@@", atributos_captura())
     h += rodape(0)
     return h
 
