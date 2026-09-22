@@ -60,10 +60,38 @@ botão desativado, em vez de levar a lugar nenhum.
 Levantamento de 20/09/2026, conferido um a um contra a página de checkout
 (título e preço batendo).
 
+## Captura de e-mail
+
+O destino do formulário da home mora no dict `CAPTURA`, no topo do `build.py`
+— é o único lugar. As mensagens que o visitante lê saem de lá também, via
+`data-*` no `<form>`; o `assets/site.js` só as lê.
+
+| Campo | O que faz |
+|---|---|
+| `para` | Endereço que recebe. Hoje `music@garagecriativa.com.br` |
+| `endpoint` | URL do formulário hospedado. **Vazio hoje** |
+| `extra` | Campos que o serviço exigir junto do e-mail |
+| `assunto` | Assunto do e-mail no modo carta |
+
+**Com `endpoint` vazio** o site entra em *modo carta*: abre o programa de
+e-mail do visitante com a mensagem pronta para `para`. Chega de verdade, mas
+depende de o visitante apertar enviar — e não constrói lista com descadastro.
+
+**Para ligar o envio automático**, cole a URL do formulário hospedado em
+`endpoint` e rode `python3 build.py`. O site faz `POST` com o campo `email`;
+o que o serviço pedir além disso entra em `extra` (ex.: `access_key` no
+Web3Forms). Se o `POST` falhar, cai no modo carta sozinho.
+
+Em nenhuma das duas rotas o formulário finge que enviou — essa era a falha
+anterior.
+
+
 ## Pendências conhecidas
 
-- O formulário de captura de e-mail **não envia para lugar nenhum**: o script
-  só exibe a mensagem de sucesso. Precisa de um endpoint antes de divulgar.
+- O formulário de captura está em **modo carta** (abre o e-mail do visitante
+  para `music@garagecriativa.com.br`). Funciona, mas perde quem não termina o
+  envio e não gera lista com descadastro. Falta a URL do formulário hospedado
+  em `CAPTURA["endpoint"]` — ver *Captura de e-mail* acima.
 - Sem `og:image`. Falta uma imagem social 1200×630.
 - As capas dos ebooks trazem a etiqueta "GUIA", vocabulário da Garage Labs.
   Na torre Garage Music o termo é "ebook" — as capas precisam ser refeitas

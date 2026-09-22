@@ -277,6 +277,12 @@ h3{font-size:24px;font-weight:700;line-height:1.16;color:var(--branco)}
 .captura input:focus{outline:none;border-color:var(--ambar)}
 .captura input::placeholder{color:var(--aco)}
 .captura .micro{font-family:"Space Grotesk",sans-serif;font-size:13px;color:var(--aco);margin:14px 0 0}
+.captura .isca{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.captura .aviso{font-family:"Space Grotesk",sans-serif;font-size:14px;color:var(--c2);
+  margin:12px 0 0;min-height:1px}
+.captura .aviso:empty{margin:0}
+.captura .aviso.erro{color:var(--ambar2)}
+.captura button[disabled]{opacity:.55;cursor:default}
 .captura .ok{font-family:"Space Grotesk",sans-serif;font-weight:600;color:var(--ambar2);font-size:17px;padding:14px 0}
 
 /* ---------- rodape ---------- */
